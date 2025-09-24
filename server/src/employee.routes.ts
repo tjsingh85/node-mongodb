@@ -1,6 +1,6 @@
 import * as express from "express";
 import { ObjectId } from "mongodb";
-import { collections } from "./database";
+import { collections, validateEmployee, getIsCosmosDB } from "./database";
 
 export const employeeRouter = express.Router();
 employeeRouter.use(express.json());
@@ -33,6 +33,12 @@ employeeRouter.get("/:id", async (req, res) => {
 employeeRouter.post("/", async (req, res) => {
     try {
         const employee = req.body;
+        
+        // Apply client-side validation for Cosmos DB
+        if (getIsCosmosDB()) {
+            validateEmployee(employee);
+        }
+        
         const result = await collections?.employees?.insertOne(employee);
 
         if (result?.acknowledged) {
@@ -50,6 +56,12 @@ employeeRouter.put("/:id", async (req, res) => {
     try {
         const id = req?.params?.id;
         const employee = req.body;
+        
+        // Apply client-side validation for Cosmos DB
+        if (getIsCosmosDB()) {
+            validateEmployee(employee);
+        }
+        
         const query = { _id: new ObjectId(id) };
         const result = await collections?.employees?.updateOne(query, { $set: employee });
 
