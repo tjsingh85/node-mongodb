@@ -37,8 +37,14 @@ export const connectToDatabase = async (uri: string) => {
 
     const db = client.db("meanStackExample");
     
-    // Check if we're using Cosmos DB
-    isCosmosDB = uri.includes('cosmos.azure.com');
+    // Check if we're using Cosmos DB - use secure hostname validation
+    try {
+        const url = new URL(uri.replace('mongodb://', 'http://').replace('mongodb+srv://', 'https://'));
+        isCosmosDB = url.hostname.endsWith('.mongo.cosmos.azure.com');
+    } catch {
+        // If URL parsing fails, assume MongoDB (safer default)
+        isCosmosDB = false;
+    }
     
     // Apply schema validation only for MongoDB (not supported by Cosmos DB MongoDB API)
     if (!isCosmosDB) {
