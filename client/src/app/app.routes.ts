@@ -8,3 +8,22 @@ export const routes: Routes = [
   { path: 'new', component: AddEmployeeComponent },
   { path: 'edit/:id', component: EditEmployeeComponent },
 ];
+
+export const routes: Routes = [
+  { path: '', component: EmployeesListComponent, title: 'Employees List' },
+  { path: 'new', component: AddEmployeeComponent },
+  { path: 'edit/:id', component: EditEmployeeComponent },
+];
+
+export const routes: Routes = [
+  { path: '', component: EmployeesListComponent, title: 'Employees List' },
+  { path: 'new', component: AddEmployeeComponent },
+  { path: 'edit/:id', component: EditEmployeeComponent },
+];
+
+
+export const routes: Routes = [
+  { path: '', component: EmployeesListComponent, title: 'Employees List' },
+  { path: 'new', component: AddEmployeeComponent },
+  { path: 'edit/:id', component: EditEmployeeComponent },
+];
