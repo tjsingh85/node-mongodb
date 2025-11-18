@@ -43,7 +43,7 @@ import { FormsModule } from '@angular/forms';
             />
           </mat-form-field>
         </div>
-        <table mat-table [dataSource]="filteredEmployees()">
+        <table mat-table [dataSource]="filteredEmployeesOfIndia()">
           <ng-container matColumnDef="col-name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let element">{{ element.name }}</td>
@@ -85,7 +85,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class EmployeesListComponent implements OnInit {
   employees$ = {} as WritableSignal<Employee[]>;
-  filteredEmployees = signal<Employee[]>([]);
+  filteredEmployeesOfIndia = signal<Employee[]>([]);
   searchTerm = '';
   displayedColumns: string[] = [
     'col-name',
@@ -102,7 +102,7 @@ export class EmployeesListComponent implements OnInit {
     const term = this.searchTerm.toLowerCase().trim();
     const allEmployees = this.employees$();
     if (!term) {
-      this.filteredEmployees.set(allEmployees);
+      this.filteredEmployeesOfIndia.set(allEmployees);
       return;
     }
     const filtered = allEmployees.filter((employee: Employee) => 
@@ -110,7 +110,7 @@ export class EmployeesListComponent implements OnInit {
       employee.position.toLowerCase().includes(term) ||
       employee.level.toLowerCase().includes(term)
     );
-    this.filteredEmployees.set(filtered);
+    this.filteredEmployeesOfIndia.set(filtered);
   }
   deleteEmployee(id: string): void {
     this.employeesService.deleteEmployee(id).subscribe({
