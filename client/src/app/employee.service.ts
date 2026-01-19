@@ -18,7 +18,9 @@ export class EmployeeService {
 
   // Generiert von GitHub Copilot - Gemeinsame Fehlerbehandlung für Employee-Operationen
   handleEmployeeOperationError(operation: string, error: any): void {
-    alert(`Failed to ${operation} employee`);
+    const statusCode = error?.status || 'Unknown';
+    const errorMessage = error?.error || error?.message || 'Unknown error';
+    alert(`Failed to ${operation} employee. Status: ${statusCode}, Error: ${errorMessage}`);
     console.error(error);
   }
 

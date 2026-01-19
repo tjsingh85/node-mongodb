@@ -10,8 +10,11 @@ const getErrorMessage = (error: unknown): string => {
     return error instanceof Error ? error.message : "Unknown error";
 };
 
-// Generiert von GitHub Copilot - Hilfsfunktion zur Erstellung einer ObjectId-Abfrage
+// Generiert von GitHub Copilot - Hilfsfunktion zur Erstellung einer ObjectId-Abfrage mit Validierung
 const createIdQuery = (id: string) => {
+    if (!ObjectId.isValid(id)) {
+        throw new Error(`Invalid ObjectId: ${id}`);
+    }
     return { _id: new ObjectId(id) };
 };
 
@@ -21,7 +24,7 @@ employeeRouter.get("/", async (_req, res) => {
         const employees = await collections?.employees?.find({}).toArray();
         res.status(200).send(employees);
     } catch (error) {
-        res.status(500).send(getErrorMessage(error));
+        res.status(400).send(getErrorMessage(error));
     }
 });
 
