@@ -5,19 +5,34 @@ import { collections } from "./database";
 export const employeeRouter = express.Router();
 employeeRouter.use(express.json());
 
+// Generiert von GitHub Copilot - Hilfsfunktion zur Extraktion der Fehlermeldung
+const getErrorMessage = (error: unknown): string => {
+    return error instanceof Error ? error.message : "Unknown error";
+};
+
+// Generiert von GitHub Copilot - Hilfsfunktion zur Erstellung einer ObjectId-Abfrage mit Validierung
+const createIdQuery = (id: string) => {
+    if (!ObjectId.isValid(id)) {
+        throw new Error(`Invalid ObjectId: ${id}`);
+    }
+    return { _id: new ObjectId(id) };
+};
+
+// Generiert von GitHub Copilot - Abrufen aller Mitarbeiter
 employeeRouter.get("/", async (_req, res) => {
     try {
         const employees = await collections?.employees?.find({}).toArray();
         res.status(200).send(employees);
     } catch (error) {
-        res.status(500).send(error instanceof Error ? error.message : "Unknown error");
+        res.status(400).send(getErrorMessage(error));
     }
 });
 
+// Generiert von GitHub Copilot - Abrufen eines einzelnen Mitarbeiters nach ID
 employeeRouter.get("/:id", async (req, res) => {
     try {
         const id = req?.params?.id;
-        const query = { _id: new ObjectId(id) };
+        const query = createIdQuery(id);
         const employee = await collections?.employees?.findOne(query);
 
         if (employee) {
@@ -30,6 +45,7 @@ employeeRouter.get("/:id", async (req, res) => {
     }
 });
 
+// Generiert von GitHub Copilot - Erstellen eines neuen Mitarbeiters
 employeeRouter.post("/", async (req, res) => {
     try {
         const employee = req.body;
@@ -42,15 +58,16 @@ employeeRouter.post("/", async (req, res) => {
         }
     } catch (error) {
         console.error(error);
-        res.status(400).send(error instanceof Error ? error.message : "Unknown error");
+        res.status(400).send(getErrorMessage(error));
     }
 });
 
+// Generiert von GitHub Copilot - Aktualisieren eines Mitarbeiters
 employeeRouter.put("/:id", async (req, res) => {
     try {
         const id = req?.params?.id;
         const employee = req.body;
-        const query = { _id: new ObjectId(id) };
+        const query = createIdQuery(id);
         const result = await collections?.employees?.updateOne(query, { $set: employee });
 
         if (result && result.matchedCount) {
@@ -61,16 +78,17 @@ employeeRouter.put("/:id", async (req, res) => {
             res.status(304).send(`Failed to update an employee: ID ${id}`);
         }
     } catch (error) {
-        const message = error instanceof Error ? error.message : "Unknown error";
+        const message = getErrorMessage(error);
         console.error(message);
         res.status(400).send(message);
     }
 });
 
+// Generiert von GitHub Copilot - Löschen eines Mitarbeiters
 employeeRouter.delete("/:id", async (req, res) => {
     try {
         const id = req?.params?.id;
-        const query = { _id: new ObjectId(id) };
+        const query = createIdQuery(id);
         const result = await collections?.employees?.deleteOne(query);
 
         if (result && result.deletedCount) {
@@ -81,7 +99,7 @@ employeeRouter.delete("/:id", async (req, res) => {
             res.status(404).send(`Failed to find an employee: ID ${id}`);
         }
     } catch (error) {
-        const message = error instanceof Error ? error.message : "Unknown error";
+        const message = getErrorMessage(error);
         console.error(message);
         res.status(400).send(message);
     }

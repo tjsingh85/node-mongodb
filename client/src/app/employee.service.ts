@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Employee } from './employee';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,23 @@ export class EmployeeService {
   employees$ = signal<Employee[]>([]);
   employee$ = signal<Employee>({} as Employee);
   
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient,
+    private router: Router
+  ) { }
+
+  // Generiert von GitHub Copilot - Gemeinsame Fehlerbehandlung für Employee-Operationen
+  handleEmployeeOperationError(operation: string, error: any): void {
+    const statusCode = error?.status || 'Unknown';
+    const errorMessage = error?.error || error?.message || 'Unknown error';
+    alert(`Failed to ${operation} employee. Status: ${statusCode}, Error: ${errorMessage}`);
+    console.error(error);
+  }
+
+  // Generiert von GitHub Copilot - Gemeinsame Navigation nach erfolgreicher Operation
+  navigateToEmployeeList(): void {
+    this.router.navigate(['/']);
+  }
 
   private refreshEmployees() {
     this.httpClient.get<Employee[]>(`${this.url}/employees`)

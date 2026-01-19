@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { EmployeeFormComponent } from '../employee-form/employee-form.component';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
@@ -24,19 +23,16 @@ import { MatCardModule } from '@angular/material/card';
   styles: ``,
 })
 export class AddEmployeeComponent {
-  constructor(
-    private router: Router,
-    private employeeService: EmployeeService
-  ) {}
+  constructor(private employeeService: EmployeeService) {}
 
+  // Generiert von GitHub Copilot - Hinzufügen eines Mitarbeiters mit gemeinsamer Fehlerbehandlung
   addEmployee(employee: Employee) {
     this.employeeService.createEmployee(employee).subscribe({
       next: () => {
-        this.router.navigate(['/']);
+        this.employeeService.navigateToEmployeeList();
       },
       error: (error) => {
-        alert('Failed to create employee');
-        console.error(error);
+        this.employeeService.handleEmployeeOperationError('create', error);
       },
     });
     this.employeeService.getEmployees();
