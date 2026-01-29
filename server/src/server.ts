@@ -4,19 +4,21 @@ import cors from "cors";
 import { connectToDatabase } from "./database";
 import { employeeRouter } from "./employee.routes";
 
-// Load environment variables from the .env file, where the ATLAS_URI is configured
+// Generiert von GitHub Copilot
+// Load environment variables from the .env file, where the COSMOS_DB_URI is configured
 dotenv.config();
 
-const { ATLAS_URI } = process.env;
+const { COSMOS_DB_URI } = process.env;
 
-if (!ATLAS_URI) {
+if (!COSMOS_DB_URI) {
   console.error(
-    "No ATLAS_URI environment variable has been defined in config.env"
+    "No COSMOS_DB_URI environment variable has been defined in .env file"
   );
   process.exit(1);
 }
 
-connectToDatabase(ATLAS_URI)
+// Generiert von GitHub Copilot
+connectToDatabase(COSMOS_DB_URI)
   .then(() => {
     const app = express();
     app.use(cors());
