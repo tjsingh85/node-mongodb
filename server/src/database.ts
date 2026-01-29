@@ -66,9 +66,12 @@ async function applySchemaValidation(db: mongodb.Db) {
                 await db.createCollection("employees", {validator: jsonSchema});
             } catch (validatorError) {
                 // If validator is not supported, create collection without it
+                console.warn("Schema validation is not supported. Creating collection without validator.");
                 await db.createCollection("employees");
             }
+        } else {
+            // Log warning for other schema validation errors
+            console.warn("Schema validation may not be fully supported in Azure Cosmos DB:", error instanceof Error ? error.message : "Unknown error");
         }
-        // Silently continue if schema validation is not supported
     }
 }
