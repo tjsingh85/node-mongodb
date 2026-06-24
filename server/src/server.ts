@@ -21,6 +21,10 @@ connectToDatabase(ATLAS_URI)
     const app = express();
     app.use(cors());
     app.use("/employees", employeeRouter);
+    // Von GitHub Copilot generiert
+    app.get("/helloworld", (_req, res) => {
+      res.status(200).send("Hello World");
+    });
 
     // start the Express server
     app.listen(5200, () => {
