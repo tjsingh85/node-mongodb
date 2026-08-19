@@ -19,9 +19,31 @@ import { MatCardModule } from '@angular/material/card';
           margin-right: 1rem;
         }
       }
+      
+      .hello-world-container {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+      }
+      
+      .hello-world-button {
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+      }
     `,
   ],
   template: `
+    <div class="hello-world-container">
+      <button 
+        mat-raised-button 
+        color="accent" 
+        class="hello-world-button"
+        (click)="showHelloWorld()"
+      >
+        Hello World
+      </button>
+    </div>
+    
     <mat-card>
       <mat-card-header>
         <mat-card-title>Employees List</mat-card-title>
@@ -81,6 +103,11 @@ export class EmployeesListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchEmployees();
+  }
+
+  // Generiert von GitHub Copilot
+  showHelloWorld = (): void => {
+    alert('Hello World!');
   }
 
   deleteEmployee(id: string): void {
